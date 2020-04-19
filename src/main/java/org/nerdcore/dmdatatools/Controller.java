@@ -38,6 +38,7 @@ public class Controller {
         }
 
         mv.addObject("creature", postCreature);
+        mv.addObject("resistanceList", CommonLists.getResistances());
 
         return mv;
 
@@ -46,9 +47,8 @@ public class Controller {
     @PostMapping("/uploadcreature")
     public GameEntity uploadCreature(@ModelAttribute("creature")Creature creature){
 
-        for(Boolean b : creature.getSavingThrows().values()){
-            System.out.println(b);
-        }
+        System.out.println(creature.getAbilities().get(0).getAbilityDescription());
+        System.out.println(creature.getAbilities().get(1).getAbilityDescription());
 
         return creature;
     }

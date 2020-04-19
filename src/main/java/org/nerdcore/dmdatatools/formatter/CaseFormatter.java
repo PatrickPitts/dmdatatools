@@ -12,4 +12,14 @@ public class CaseFormatter {
         }
         return word.substring(0,1).toUpperCase() + word.substring(1);
     }
+
+    @Bean(name="underscoreTitle")
+    public static String underscoreTitle(String phrase){
+        String[] words = phrase.split("_");
+        StringBuilder ret = new StringBuilder();
+        for(String str : words){
+            ret.append(str.substring(0, 1).toUpperCase()).append(str.substring(1)).append(" ");
+        }
+        return ret.toString();
+    }
 }

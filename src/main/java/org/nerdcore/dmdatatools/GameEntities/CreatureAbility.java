@@ -18,14 +18,15 @@ public class CreatureAbility implements Serializable {
     private int limitedUsageUpper = -1;
     private String hitDamage;
     private Creature owningCreature;
+    private boolean isAttack = false;
 
 
     public enum LimitedUsageType{
         DAY, RECHARGE_ROLL, RECHARGE_REST
     }
 
-    public enum  AbilityType{
-        ACTION, REACTION, LEGENDARY, TRAIT, LAIR, REGIONAL
+    public enum AbilityType{
+        ACTION, ATTACK_ACTION, REACTION, ATTACK_REACTION, LEGENDARY, TRAIT, LAIR, REGIONAL
     }
 
     public CreatureAbility() {
@@ -42,6 +43,14 @@ public class CreatureAbility implements Serializable {
         this.limitedUsageUpper = limitedUsageUpper;
         this.hitDamage = hitDamage;
         this.owningCreature = owningCreature;
+    }
+
+    public boolean getIsAttack() {
+        return isAttack;
+    }
+
+    public void setIsAttack(boolean attack) {
+        isAttack = attack;
     }
 
     public long getAbilityId() {

@@ -1,6 +1,5 @@
 package org.nerdcore.dmdatatools.GameEntities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -10,84 +9,105 @@ public class Creature extends GameEntity implements Serializable {
     private double challengeRating;
     private Size size;
     private Alignment alignment;
-    private int armorClass;
+
     private String armorClassQualifier;
-    private String hitPointString;
+
+    private int hitDieBase = 0;
+    private int hitDieCount = 0;
+
+    private int armorClass = 10;
     private int groundSpeed = 0;
     private int burrowSpeed = 0;
     private int climbSpeed = 0;
     private int flySpeed = 0;
     private int swimSpeed = 0;
     private DefaultCreatureType creatureType;
+
     private List<String> skills = new ArrayList<>();
-    private List<String> vulnerabilities = new ArrayList<>();
-    private List<String> immunities = new ArrayList<>();
-    private List<String> resistances = new ArrayList<>();
+
+    private List<String> damageVulnerabilities = new ArrayList<>();
+
+    private List<String> damageImmunities = new ArrayList<>();
+
+    private List<String> damageResistances = new ArrayList<>();
+
+    private List<String> conditionImmunities = new ArrayList<>();
+
+
     private int blindsight = 0;
     private int darkvision = 0;
     private int tremorsense = 0;
     private int truesight = 0;
     private int passivePerception = 10;
-    private int[] abilityScores = {10, 10, 10, 10, 10, 17};
-    private List<CreatureAbility> abilities = new ArrayList<>();
-    private Map<AbilityScore, Boolean> savingThrows = new LinkedHashMap<AbilityScore, Boolean>(){{
+    private int[] abilityScores = {10, 10, 10, 10, 10, 10};
+
+    private Map<AbilityScore, Boolean> savingThrows = new HashMap<AbilityScore, Boolean>(){{
         put(AbilityScore.STR, false);
         put(AbilityScore.DEX, false);
         put(AbilityScore.CON, false);
         put(AbilityScore.INT, false);
         put(AbilityScore.WIS, false);
         put(AbilityScore.CHA, false);
-    }};
-
-    private Map<String, ArrayList<String>> commonFeatures = new HashMap<String, ArrayList<String>>(){{
-        put("resistances",(ArrayList<String>)Arrays.asList("Fire", "Thunder", "piercing"));
 
     }};
 
+    private List<CreatureAbility> abilities = new ArrayList<>();
 
-    public String printAllAbilities(){
-
-        StringBuilder str = new StringBuilder();
-
-        for (CreatureAbility ability : abilities) {
-            System.out.println(ability.getAbilityName());
-            str.append(ability.getAbilityName());
-        }
-
-        return str.toString();
-    }
-
-
-    private enum Alignment {
+    public enum Alignment {
         LAWFUL, LAWFUL_GOOD, LAWFUL_EVIL, GOOD, NEUTRAL, EVIL, CHAOTIC_GOOD, CHAOTIC, CHAOTIC_EVIL, ANY, UNALIGNED
-
     }
-    private enum AbilityScore {
+
+    public enum AbilityScore {
         STR, DEX, CON, INT, WIS, CHA
-
     }
+
     public enum Size {
         TINY, SMALL, MEDIUM, LARGE, HUGE, GARGANTUAN
-
     }
+
     public enum DefaultCreatureType{
         ABERRATION, BEAST, CELESTIAL, CONSTRUCT, DRAGON, ELEMENTAL, FEY, FIEND, GIANT, HUMANOID, MONSTROSITY, OOZE, PLANT, UNDEAD
-
     }
+
+
 
     public Creature() {
     }
 
+    public List<String> getDamageVulnerabilities() {
+        return damageVulnerabilities;
+    }
+
+    public void setDamageVulnerabilities(List<String> damageVulnerabilities) {
+        this.damageVulnerabilities = damageVulnerabilities;
+    }
+
+    public List<String> getDamageImmunities() {
+        return damageImmunities;
+    }
+
+    public void setDamageImmunities(List<String> damageImmunities) {
+        this.damageImmunities = damageImmunities;
+    }
+
+    public List<String> getDamageResistances() {
+        return damageResistances;
+    }
+
+    public void setDamageResistances(List<String> damageResistances) {
+        this.damageResistances = damageResistances;
+    }
+
+    public List<String> getConditionImmunities() {
+        return conditionImmunities;
+    }
+
+    public void setConditionImmunities(List<String> conditionImmunities) {
+        this.conditionImmunities = conditionImmunities;
+    }
+
     public Map<AbilityScore, Boolean> getSavingThrows() {
         return savingThrows;
-    }
-
-    public List<String> getResistances() {
-        return resistances;
-    }
-
-    public void setResistances(List<String> resistances) {
-        this.resistances = resistances;
     }
 
     public void setSavingThrows(Map<AbilityScore, Boolean> savingThrows) {
@@ -130,12 +150,20 @@ public class Creature extends GameEntity implements Serializable {
         this.armorClassQualifier = armorClassQualifier;
     }
 
-    public String getHitPointString() {
-        return hitPointString;
+    public int getHitDieBase() {
+        return hitDieBase;
     }
 
-    public void setHitPointString(String hitPointString) {
-        this.hitPointString = hitPointString;
+    public void setHitDieBase(int hitDieBase) {
+        this.hitDieBase = hitDieBase;
+    }
+
+    public int getHitDieCount() {
+        return hitDieCount;
+    }
+
+    public void setHitDieCount(int hitDieCount) {
+        this.hitDieCount = hitDieCount;
     }
 
     public int getGroundSpeed() {
@@ -192,22 +220,6 @@ public class Creature extends GameEntity implements Serializable {
 
     public void setSkills(List<String> skills) {
         this.skills = skills;
-    }
-
-    public List<String> getVulnerabilities() {
-        return vulnerabilities;
-    }
-
-    public void setVulnerabilities(List<String> vulnerabilities) {
-        this.vulnerabilities = vulnerabilities;
-    }
-
-    public List<String> getImmunities() {
-        return immunities;
-    }
-
-    public void setImmunities(List<String> immunities) {
-        this.immunities = immunities;
     }
 
     public int getBlindsight() {
@@ -270,10 +282,6 @@ public class Creature extends GameEntity implements Serializable {
         return challengeRating;
     }
 
-    public void setChellangeRating(double challengeRating) {
-        this.challengeRating = challengeRating;
-    }
-
     public List<CreatureAbility> getAbilities() {
         return abilities;
     }
@@ -288,7 +296,7 @@ public class Creature extends GameEntity implements Serializable {
 
     public void cleanup() {
         for (CreatureAbility c : abilities) {
-            if (c.getAbilityName() == null) {
+            if (c.getAbilityName().length() <= 0 ) {
                 abilities.remove(c);
             }
         }
@@ -317,5 +325,23 @@ public class Creature extends GameEntity implements Serializable {
             default:
                 break;
         }
+    }
+
+    public int proficiencyBonus(){
+        if(challengeRating < 5){
+            return 2;
+        } else if(challengeRating < 9){
+            return 3;
+        } else if(challengeRating < 13){
+            return 4;
+        } else if(challengeRating < 17){
+            return 5;
+        } else if(challengeRating < 21){
+            return 6;
+        } else if(challengeRating < 25){
+            return 7;
+        } else if(challengeRating < 29){
+            return 8;
+        } return 9;
     }
 }
