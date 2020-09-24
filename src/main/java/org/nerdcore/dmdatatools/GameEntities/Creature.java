@@ -33,7 +33,6 @@ public class Creature extends GameEntity implements Serializable {
 
     private List<String> conditionImmunities = new ArrayList<>();
 
-
     private int blindsight = 0;
     private int darkvision = 0;
     private int tremorsense = 0;
@@ -54,7 +53,7 @@ public class Creature extends GameEntity implements Serializable {
     private List<CreatureAbility> abilities = new ArrayList<>();
 
     public enum Alignment {
-        LAWFUL, LAWFUL_GOOD, LAWFUL_EVIL, GOOD, NEUTRAL, EVIL, CHAOTIC_GOOD, CHAOTIC, CHAOTIC_EVIL, ANY, UNALIGNED
+        LAWFUL, LAWFUL_GOOD, LAWFUL_EVIL, ANY_LAWFUL, GOOD, NEUTRAL, EVIL, ANY_GOOD, ANY_EVIL, CHAOTIC_GOOD, CHAOTIC, CHAOTIC_EVIL, ANY_CHAOTIC, ANY, UNALIGNED
     }
 
     public enum AbilityScore {
